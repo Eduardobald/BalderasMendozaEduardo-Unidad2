@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Registro de Materiales</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <!-- MENÚ LATERAL -->
+
+    <aside class="sidebar">
+
+        <div class="marca">
+            <div class="marca-icono">M</div>
+
+            <div>
+                <h2>ALMACÉN</h2>
+                <p>Control de materiales</p>
+            </div>
+        </div>
+
+        <nav class="menu">
+
+            <a href="#" class="activo">
+                <span>▦</span>
+                Inicio
+            </a>
+
+            <a href="#registro">
+                <span>＋</span>
+                Registrar
+            </a>
+
+            <a href="#materiales">
+                <span>▤</span>
+                Materiales
+            </a>
+
+        </nav>
+
+        <div class="usuario">
+            <div class="usuario-icono">A</div>
+
+            <div>
+                <strong>Almacén</strong>
+                <p>Usuario</p>
+            </div>
+        </div>
+
+    </aside>
+
+
+    <!-- CONTENIDO -->
+
+    <main class="contenido">
+
+        <!-- ENCABEZADO -->
+
+        <header class="encabezado">
+
+            <div>
+                <span class="seccion">CONTROL DE ALMACÉN</span>
+
+                <h1>Registro de Materiales</h1>
+
+                <p>
+                    Registra y consulta los materiales recibidos.
+                </p>
+            </div>
+
+            <div class="fecha">
+                30 Septiembre 2026
+            </div>
+
+        </header>
+
+
+        <!-- TARJETAS -->
+
+        <section class="resumen">
+
+            <div class="tarjeta">
+
+                <div class="tarjeta-icono">
+                    ▤
+                </div>
+
+                <div>
+                    <p>Registros</p>
+                    <h2>0</h2>
+                    <span>Entradas registradas</span>
+                </div>
+
+            </div>
+
+
+            <div class="tarjeta">
+
+                <div class="tarjeta-icono">
+                    KG
+                </div>
+
+                <div>
+                    <p>Total recibido</p>
+                    <h2>0.00 kg</h2>
+                    <span>Kilogramos acumulados</span>
+                </div>
+
+            </div>
+
+
+            <div class="tarjeta">
+
+                <div class="tarjeta-icono">
+                    M
+                </div>
+
+                <div>
+                    <p>Materiales</p>
+                    <h2>0</h2>
+                    <span>Tipos registrados</span>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- FORMULARIO -->
+
+        <section class="panel" id="registro">
+
+            <div class="panel-titulo">
+
+                <div>
+                    <h2>Registrar material</h2>
+
+                    <p>
+                        Captura los datos correspondientes a la entrada.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <form class="formulario">
+
+                <div class="campo">
+
+                    <label>Fecha</label>
+
+                    <input type="date">
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label>Proveedor</label>
+
+                    <input
+                        type="text"
+                        placeholder="Ej. Proveedor A"
+                    >
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label>Material</label>
+
+                    <input
+                        type="text"
+                        placeholder="Ej. Rebaba"
+                    >
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label>Cantidad</label>
+
+                    <div class="input-kg">
+
+                        <input
+                            type="number"
+                            placeholder="0.00"
+                        >
+
+                        <span>KG</span>
+
+                    </div>
+
+                </div>
+
+
+                <button type="button" class="btn-registrar">
+                    + Registrar material
+                </button>
+
+            </form>
+
+        </section>
+
+
+        <!-- TABLA -->
+
+        <section class="panel tabla-panel" id="materiales">
+
+            <div class="panel-titulo tabla-titulo">
+
+                <div>
+                    <h2>Materiales registrados</h2>
+
+                    <p>
+                        Historial de movimientos registrados.
+                    </p>
+                </div>
+
+
+                <div class="busqueda">
+
+                    <input
+                        type="text"
+                        placeholder="Buscar material..."
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="tabla-contenedor">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>FECHA</th>
+                            <th>PROVEEDOR</th>
+                            <th>MATERIAL</th>
+                            <th>CANTIDAD</th>
+                            <th>ACCIONES</th>
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        <!-- DATOS DE EJEMPLO -->
+
+                        <tr>
+
+                            <td>30/09/2026</td>
+
+                            <td>
+                                Proveedor A
+                            </td>
+
+                            <td>
+                                <span class="material">
+                                    Rebaba
+                                </span>
+                            </td>
+
+                            <td class="cantidad">
+                                1,250.00 kg
+                            </td>
+
+                            <td>
+                                <button class="btn-editar">
+                                    Editar
+                                </button>
+
+                                <button class="btn-eliminar">
+                                    Eliminar
+                                </button>
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>29/09/2026</td>
+
+                            <td>
+                                Proveedor B
+                            </td>
+
+                            <td>
+                                <span class="material">
+                                    Grueso
+                                </span>
+                            </td>
+
+                            <td class="cantidad">
+                                850.00 kg
+                            </td>
+
+                            <td>
+                                <button class="btn-editar">
+                                    Editar
+                                </button>
+
+                                <button class="btn-eliminar">
+                                    Eliminar
+                                </button>
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</body>
+
+</html>
