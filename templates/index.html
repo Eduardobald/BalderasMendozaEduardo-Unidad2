@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -18,12 +19,14 @@
     <aside class="sidebar">
 
         <div class="marca">
+
             <div class="marca-icono">M</div>
 
             <div>
                 <h2>ALMACÉN</h2>
                 <p>Control de materiales</p>
             </div>
+
         </div>
 
         <nav class="menu">
@@ -46,18 +49,20 @@
         </nav>
 
         <div class="usuario">
+
             <div class="usuario-icono">A</div>
 
             <div>
                 <strong>Almacén</strong>
                 <p>Usuario</p>
             </div>
+
         </div>
 
     </aside>
 
 
-    <!-- CONTENIDO -->
+    <!-- CONTENIDO PRINCIPAL -->
 
     <main class="contenido">
 
@@ -66,25 +71,29 @@
         <header class="encabezado">
 
             <div>
-                <span class="seccion">CONTROL DE ALMACÉN</span>
+
+                <span class="seccion">
+                    CONTROL DE ALMACÉN
+                </span>
 
                 <h1>Registro de Materiales</h1>
 
                 <p>
                     Registra y consulta los materiales recibidos.
                 </p>
+
             </div>
 
-            <div class="fecha">
-                30 Septiembre 2026
-            </div>
+            <div class="fecha" id="fecha-actual"></div>
 
         </header>
 
 
-        <!-- TARJETAS -->
+        <!-- TARJETAS DE RESUMEN -->
 
         <section class="resumen">
+
+            <!-- TOTAL DE REGISTROS -->
 
             <div class="tarjeta">
 
@@ -93,13 +102,19 @@
                 </div>
 
                 <div>
+
                     <p>Registros</p>
-                    <h2>0</h2>
+
+                    <h2>{{ total_registros }}</h2>
+
                     <span>Entradas registradas</span>
+
                 </div>
 
             </div>
 
+
+            <!-- TOTAL DE KILOGRAMOS -->
 
             <div class="tarjeta">
 
@@ -108,13 +123,21 @@
                 </div>
 
                 <div>
+
                     <p>Total recibido</p>
-                    <h2>0.00 kg</h2>
+
+                    <h2>
+                        {{ "%.2f"|format(total_kg) }} kg
+                    </h2>
+
                     <span>Kilogramos acumulados</span>
+
                 </div>
 
             </div>
 
+
+            <!-- TOTAL DE TIPOS DE MATERIAL -->
 
             <div class="tarjeta">
 
@@ -123,9 +146,13 @@
                 </div>
 
                 <div>
+
                     <p>Materiales</p>
-                    <h2>0</h2>
+
+                    <h2>{{ total_tipos }}</h2>
+
                     <span>Tipos registrados</span>
+
                 </div>
 
             </div>
@@ -133,67 +160,106 @@
         </section>
 
 
-        <!-- FORMULARIO -->
+        <!-- FORMULARIO DE REGISTRO -->
 
         <section class="panel" id="registro">
 
             <div class="panel-titulo">
 
                 <div>
+
                     <h2>Registrar material</h2>
 
                     <p>
-                        Captura los datos correspondientes a la entrada.
+                        Captura los datos correspondientes
+                        a la entrada.
                     </p>
+
                 </div>
 
             </div>
 
 
-            <form class="formulario">
+            <form
+                class="formulario"
+                action="{{ url_for('registrar') }}"
+                method="POST"
+            >
+
+                <!-- FECHA -->
 
                 <div class="campo">
 
-                    <label>Fecha</label>
+                    <label for="fecha">
+                        Fecha
+                    </label>
 
-                    <input type="date">
+                    <input
+                        type="date"
+                        id="fecha"
+                        name="fecha"
+                        required
+                    >
 
                 </div>
 
 
+                <!-- PROVEEDOR -->
+
                 <div class="campo">
 
-                    <label>Proveedor</label>
+                    <label for="proveedor">
+                        Proveedor
+                    </label>
 
                     <input
                         type="text"
+                        id="proveedor"
+                        name="proveedor"
                         placeholder="Ej. Proveedor A"
+                        required
                     >
 
                 </div>
 
 
+                <!-- MATERIAL -->
+
                 <div class="campo">
 
-                    <label>Material</label>
+                    <label for="material">
+                        Material
+                    </label>
 
                     <input
                         type="text"
+                        id="material"
+                        name="material"
                         placeholder="Ej. Rebaba"
+                        required
                     >
 
                 </div>
 
 
+                <!-- CANTIDAD -->
+
                 <div class="campo">
 
-                    <label>Cantidad</label>
+                    <label for="cantidad">
+                        Cantidad
+                    </label>
 
                     <div class="input-kg">
 
                         <input
                             type="number"
+                            id="cantidad"
+                            name="cantidad"
                             placeholder="0.00"
+                            step="0.01"
+                            min="0.01"
+                            required
                         >
 
                         <span>KG</span>
@@ -203,7 +269,12 @@
                 </div>
 
 
-                <button type="button" class="btn-registrar">
+                <!-- BOTÓN REGISTRAR -->
+
+                <button
+                    type="submit"
+                    class="btn-registrar"
+                >
                     + Registrar material
                 </button>
 
@@ -212,26 +283,35 @@
         </section>
 
 
-        <!-- TABLA -->
+        <!-- TABLA DE MATERIALES -->
 
-        <section class="panel tabla-panel" id="materiales">
+        <section
+            class="panel tabla-panel"
+            id="materiales"
+        >
 
             <div class="panel-titulo tabla-titulo">
 
                 <div>
+
                     <h2>Materiales registrados</h2>
 
                     <p>
                         Historial de movimientos registrados.
                     </p>
+
                 </div>
 
+
+                <!-- BUSCADOR -->
 
                 <div class="busqueda">
 
                     <input
                         type="text"
+                        id="buscar"
                         placeholder="Buscar material..."
+                        onkeyup="buscarMaterial()"
                     >
 
                 </div>
@@ -241,16 +321,22 @@
 
             <div class="tabla-contenedor">
 
-                <table>
+                <table id="tabla-materiales">
 
                     <thead>
 
                         <tr>
+
                             <th>FECHA</th>
+
                             <th>PROVEEDOR</th>
+
                             <th>MATERIAL</th>
+
                             <th>CANTIDAD</th>
+
                             <th>ACCIONES</th>
+
                         </tr>
 
                     </thead>
@@ -258,68 +344,99 @@
 
                     <tbody>
 
-                        <!-- DATOS DE EJEMPLO -->
+                        {% for material in materiales %}
 
                         <tr>
 
-                            <td>30/09/2026</td>
+                            <!-- FECHA -->
 
                             <td>
-                                Proveedor A
+                                {{ material.fecha }}
                             </td>
 
+
+                            <!-- PROVEEDOR -->
+
                             <td>
+                                {{ material.proveedor }}
+                            </td>
+
+
+                            <!-- MATERIAL -->
+
+                            <td>
+
                                 <span class="material">
-                                    Rebaba
+
+                                    {{ material.material }}
+
                                 </span>
+
                             </td>
+
+
+                            <!-- CANTIDAD -->
 
                             <td class="cantidad">
-                                1,250.00 kg
+
+                                {{ "%.2f"|format(material.cantidad) }} kg
+
                             </td>
 
+
+                            <!-- ACCIONES -->
+
                             <td>
-                                <button class="btn-editar">
+
+                                <!-- EDITAR -->
+
+                                <button
+                                    type="button"
+                                    class="btn-editar"
+                                    disabled
+                                    title="Función pendiente"
+                                >
                                     Editar
                                 </button>
 
-                                <button class="btn-eliminar">
-                                    Eliminar
-                                </button>
+
+                                <!-- ELIMINAR -->
+
+                                <form
+                                    action="{{ url_for('eliminar', id=material.id) }}"
+                                    method="POST"
+                                    style="display: inline;"
+                                    onsubmit="return confirm('¿Estás seguro de eliminar este material?');"
+                                >
+
+                                    <button
+                                        type="submit"
+                                        class="btn-eliminar"
+                                    >
+                                        Eliminar
+                                    </button>
+
+                                </form>
+
                             </td>
 
                         </tr>
 
+                        {% else %}
+
+                        <!-- SIN REGISTROS -->
 
                         <tr>
 
-                            <td>29/09/2026</td>
+                            <td colspan="5">
 
-                            <td>
-                                Proveedor B
-                            </td>
+                                No hay materiales registrados.
 
-                            <td>
-                                <span class="material">
-                                    Grueso
-                                </span>
-                            </td>
-
-                            <td class="cantidad">
-                                850.00 kg
-                            </td>
-
-                            <td>
-                                <button class="btn-editar">
-                                    Editar
-                                </button>
-
-                                <button class="btn-eliminar">
-                                    Eliminar
-                                </button>
                             </td>
 
                         </tr>
+
+                        {% endfor %}
 
                     </tbody>
 
@@ -330,6 +447,65 @@
         </section>
 
     </main>
+
+
+    <!-- JAVASCRIPT -->
+
+    <script>
+
+        // MOSTRAR FECHA ACTUAL
+
+        const hoy = new Date();
+
+        const opciones = {
+            day: "numeric",
+            month: "long",
+            year: "numeric"
+        };
+
+        document.getElementById("fecha-actual").textContent =
+            hoy.toLocaleDateString("es-MX", opciones);
+
+
+        // COLOCAR FECHA ACTUAL EN EL FORMULARIO
+
+        const fechaLocal = new Date(
+            hoy.getTime() - hoy.getTimezoneOffset() * 60000
+        ).toISOString().split("T")[0];
+
+        document.getElementById("fecha").value = fechaLocal;
+
+
+        // BUSCAR MATERIALES
+
+        function buscarMaterial() {
+
+            const texto = document.getElementById("buscar")
+                .value.toLowerCase();
+
+            const filas = document.querySelectorAll(
+                "#tabla-materiales tbody tr"
+            );
+
+            filas.forEach(function(fila) {
+
+                const contenido = fila.textContent.toLowerCase();
+
+                if (contenido.includes(texto)) {
+
+                    fila.style.display = "";
+
+                } else {
+
+                    fila.style.display = "none";
+
+                }
+
+            });
+
+        }
+
+    </script>
 
 </body>
 
